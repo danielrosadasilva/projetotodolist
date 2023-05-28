@@ -3,6 +3,7 @@ import './App.css';
 //import { Todos } from './Dados';
 import Todo from './components/Todo';
 import TodoForm from './components/TodoForm';
+import Search from './components/Search';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
   },
 ]);
 
+const[search,setSearch]=useState("");
   const addTodo=(text, category)=>{
     const newTodos=[ 
       ...todos,{
@@ -45,20 +47,34 @@ function App() {
     setTodos(newTodos);
   }
 
+  const removeTodo=(id)=>{
+    const newTodos=[...todos];
+    const filteredTodos=newTodos.filter(todo=>todo.id !==id?todo:null);
+    setTodos(filteredTodos);
+  }
+
+  const completedTodo=(id)=>{
+    const newTodos=[...todos];
+    newTodos.map((todo)=>todo.id===id?todo.isCompleted=!todo.isCompleted:todo);
+    setTodos(newTodos);
+
+  }
+
   return (
     <div className="App">
       <h1>Lista de Tarefas</h1>
+      <Search  search={search} setSearch={setSearch}/>
       <div className='todo-list'>
-          {todos.map((todo,key)=>(     
+          {todos.filter((todo)=>todo.text.toLowerCase().includes(search.toLowerCase())).map((todo,key)=>(     
 
-          <Todo key={todo.id} todo={todo} />
+          <Todo key={todo.id} todo={todo} removeTodo={removeTodo} completedTodo={completedTodo} />
 
           ))}
-          <div>
-            <TodoForm addTodo={addTodo}/> 
-          </div>
-
+        
       </div>
+       <div>
+            <TodoForm addTodo={addTodo}/> 
+        </div>
     </div>
   );
 }
