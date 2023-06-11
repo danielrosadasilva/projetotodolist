@@ -1,7 +1,5 @@
 <div align="center">
 <img src="docs/images/react-query-logo.svg"  width="400" alt="Logo" />
-# Projeto com React Query
-
 Um Projeto, com utilização dos hooks useQuery , UseMutation
 
 ## 🛠️ Construído com
