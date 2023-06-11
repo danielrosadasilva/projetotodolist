@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import Pagination from './components/Pagination';
 import './App.css';
 //import { Todos } from './Dados';
 import Todo from './components/Todo';
 import TodoForm from './components/TodoForm';
 import Search from './components/Search';
+import ComponenteSelect from './components/ComponenteSelect';
+
+
 
 
 function App() {
@@ -35,6 +39,15 @@ function App() {
 ]);
 
 const[search,setSearch]=useState("");
+const [filtered,setFiltered]=useState();
+
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 3;
+
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
+};
+
   const addTodo=(text, category)=>{
     const newTodos=[ 
       ...todos,{
@@ -63,6 +76,8 @@ const[search,setSearch]=useState("");
   return (
     <div className="App">
       <h1>Lista de Tarefas</h1>
+      <ComponenteSelect todos={todos} setFiltered={setFiltered} />
+    
       <Search  search={search} setSearch={setSearch}/>
       <div className='todo-list'>
           {todos.filter((todo)=>todo.text.toLowerCase().includes(search.toLowerCase())).map((todo,key)=>(     
@@ -70,11 +85,21 @@ const[search,setSearch]=useState("");
           <Todo key={todo.id} todo={todo} removeTodo={removeTodo} completedTodo={completedTodo} />
 
           ))}
-        
+
+          
+        <Pagination
+          data={todos}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </div>
        <div>
             <TodoForm addTodo={addTodo}/> 
         </div>
+        <section>
+       
+        </section>
     </div>
   );
 }
